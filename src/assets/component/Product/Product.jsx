@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import ProductStore from "../../store/productStore";
 import UserStore from "../../store/userStore";
@@ -45,11 +46,7 @@ const Product = () => {
               key={item._id}
               className="bg-white shadow-md rounded-xl duration-500 hover:shadow-xl"
             >
-              <img
-                src="https://images.unsplash.com/photo-1646753522408-077ef9839300?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8NjZ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                alt="Product"
-                className="rounded-t-xl"
-              />
+              <img src={item.image} alt="Product" className="rounded-t-xl" />
               <div className="px-4 py-3">
                 <span className="text-gray-400 mr-3 uppercase text-xs">
                   Brand: {item.brand?.brandName}
@@ -60,7 +57,7 @@ const Product = () => {
                 <div className="flex items-center">
                   <div className="flex justify-between w-full py-2">
                     <Link
-                      to={item._id}
+                      to={`/single-product/${item._id}`}
                       className="bg-emerald-600 p-2 rounded text-white"
                     >
                       View
@@ -84,6 +81,7 @@ const Product = () => {
             </div>
           ))}
       </div>
+      <Toaster position="top-center" />
     </div>
   );
 };

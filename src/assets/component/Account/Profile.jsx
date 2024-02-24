@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { IoMdLogOut } from "react-icons/io";
 import UserStore from "../../store/userStore";
+import ValidationHelper from "../../utility/ValidationHelper";
 const Profile = () => {
   const {
     imageOnChange,
@@ -14,19 +16,42 @@ const Profile = () => {
   } = UserStore();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await userImageRequest(imageData);
+    if (imageData.image.trim() === "") {
+      toast.error("Please Provide your Image URL");
+    } else if (!ValidationHelper.IsUrl(imageData.image)) {
+      toast.error("please provide valid url");
+    } else {
+      const res = await userImageRequest(imageData);
+      if (res.status === "success") {
+        toast.success("Profile picture update success");
+        await userProfileRequest();
+      } else {
+        toast.error("Profile picture not change");
+      }
+    }
   };
   const handlePassword = async (e) => {
     e.preventDefault();
-    await userPasswordRequest(passwordData);
-    passwordOnChange("password", "");
-    passwordOnChange("confirmPassword", "");
+    if (!ValidationHelper.IsPassword(passwordData.password)) {
+      toast.error(
+        "Password must be 1 lowercase 1 uppercase 1 special character at least one digit and minimum 6 character"
+      );
+    } else if (!ValidationHelper.IsPassword(passwordData.confirmPassword)) {
+      toast.error(
+        "Confirm Password must be 1 lowercase 1 uppercase 1 special character at least one digit and minimum 6 character"
+      );
+    } else {
+      const res = await userPasswordRequest(passwordData);
+      if (res.status === "Fail") {
+        toast.error(res.message);
+      } else {
+        passwordOnChange("password", "");
+        passwordOnChange("confirmPassword", "");
+        toast.success("Password change success");
+      }
+    }
   };
-  useEffect(() => {
-    (async () => {
-      await userProfileRequest();
-    })();
-  }, []);
+
   return (
     <div className="max-w-6xl mx-auto px-3 mt-3">
       <div className="flex justify-between">
@@ -56,7 +81,7 @@ const Profile = () => {
                   <input
                     type="url"
                     className="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
-                    placeholder="*******"
+                    placeholder="https://www.example.com/dfdf.png"
                     value={imageData.image}
                     onChange={(e) => {
                       imageOnChange("image", e.target.value);
@@ -122,6 +147,7 @@ const Profile = () => {
           </form>
         </div>
       </div>
+      <Toaster position="top-center" />
     </div>
   );
 };

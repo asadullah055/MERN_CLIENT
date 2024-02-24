@@ -74,7 +74,7 @@ const UserStore = create((set) => ({
       withCredentials: true,
     });
     set({ isFormSubmit: false });
-    return res.data["status"];
+    return res.data;
   },
   passwordData: {
     password: "",

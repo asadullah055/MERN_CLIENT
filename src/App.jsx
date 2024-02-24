@@ -17,6 +17,7 @@ import Product from "./assets/component/Product/Product";
 import ProductByBrand from "./assets/component/Product/ProductByBrand";
 import ProductByCategory from "./assets/component/Product/ProductByCategory";
 import SearchByName from "./assets/component/Product/SearchByName";
+import ViewSingleProduct from "./assets/component/Product/ViewSingleProduct";
 import UserStore from "./assets/store/userStore";
 
 function App() {
@@ -44,7 +45,9 @@ function App() {
               </PrivateRoute>
             }
           />
+
           <Route path="/add-product" element={<AddProduct />} />
+          <Route path="/single-product/:id" element={<ViewSingleProduct />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/profile" element={<Profile />} />

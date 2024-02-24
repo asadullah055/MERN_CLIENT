@@ -23,8 +23,9 @@ const ProductStore = create((set) => ({
     const result = await axios.post(`http://localhost:4000/add-product`, body, {
       withCredentials: true,
     });
+  
     set({ isFormSubmit: false });
-    return result.data["status"] === "success";
+    return result.data;
   },
   singleProduct: null,
   singleProductRequest: async (id) => {
@@ -35,6 +36,18 @@ const ProductStore = create((set) => ({
     
     if (res.data["status"] === "success") {
       set({ productFormData: res.data["data"][0] });
+    }
+  },
+
+  getProductById:  null,
+  getProductByIdRequest: async (id) => {
+    set({ getProductById: null });
+    let res = await axios.get(`http://localhost:4000/single-product/${id}`, {
+      withCredentials: true,
+    });
+    
+    if (res.data["status"] === "success") {
+      set({ getProductById: res.data["data"][0] });
     }
   },
   allProduct: null,

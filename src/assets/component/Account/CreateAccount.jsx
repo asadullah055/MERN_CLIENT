@@ -7,12 +7,8 @@ import SubmitForm from "./SubmitForm";
 
 const CreateAccount = () => {
   let navigate = useNavigate();
-  const {
-    accountFormData,
-    accountFormOnChange,
-    isFormSubmit,
-    createAccountRequest,
-  } = UserStore();
+  const { accountFormData, accountFormOnChange, createAccountRequest } =
+    UserStore();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -32,7 +28,7 @@ const CreateAccount = () => {
       );
     } else {
       const res = await createAccountRequest(accountFormData);
-
+      
       if (res.status === "Fail") {
         toast.error(res.message);
       } else if (res.status === "success") {

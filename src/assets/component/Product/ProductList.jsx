@@ -81,17 +81,6 @@ const ProductList = () => {
             )}
           </select>
         </label>
-        {/* <label className="block w-full">
-          <span className="text-gray-700">Search By Name</span>
-          <input
-            type="text"
-            className="rounded w-full"
-            value={Filter.name}
-            onChange={(e) => {
-              inputOnChange("name", e.target.value);
-            }}
-          />
-        </label> */}
       </div>
       <div className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 justify-items-center justify-center gap-8 my-5">
         {filterProduct &&
@@ -100,11 +89,7 @@ const ProductList = () => {
               key={item._id}
               className="bg-white shadow-md rounded-xl duration-500 hover:scale-100 hover:shadow-xl"
             >
-              <img
-                src="https://images.unsplash.com/photo-1646753522408-077ef9839300?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8NjZ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                alt="Product"
-                className="rounded-t-xl"
-              />
+              <img src={item.image} alt="Product" className="rounded-t-xl" />
               <div className="px-4 py-3">
                 <span className="text-gray-400 mr-3 uppercase text-xs">
                   Brand: {item.brand.brandName}

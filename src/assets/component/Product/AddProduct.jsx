@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import ProductStore from "../../store/productStore";
+import ValidationHelper from "../../utility/ValidationHelper";
 import { SuccessAlert } from "../../utility/utility";
 import SubmitForm from "../Account/SubmitForm";
 
@@ -30,17 +32,28 @@ const AddProduct = () => {
   }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (id === null) {
-      const res = SuccessAlert("Product create success");
-      if (res) {
-        await createProductRequest(productFormData);
-        navigate("/product");
-      }
+    if (productFormData.name.trim() === "") {
+      toast.error("Please Provide Product Name");
+    } else if (productFormData.image.trim() === "") {
+      toast.error("Please Provide your Image URL");
+    } else if (!ValidationHelper.IsUrl(productFormData.image)) {
+      toast.error("please provide valid url");
+    } else if (productFormData.details.trim() === "") {
+      toast.error("Details is required");
     } else {
-      const res = SuccessAlert("update Success");
-      if (res) {
-        await updateProductRequest(productFormData, id);
-        navigate("/product");
+      if (id === null) {
+        const result = await createProductRequest(productFormData);
+        if (result.status === "success") {
+          const res = SuccessAlert("Product create success");
+
+          res ? navigate("/product") : toast.error("something is wrong");
+        }
+      } else {
+        const res = SuccessAlert("update Success");
+        if (res) {
+          await updateProductRequest(productFormData, id);
+          navigate("/product");
+        }
       }
     }
   };
@@ -140,6 +153,7 @@ const AddProduct = () => {
           ></SubmitForm>
         </div>
       </form>
+      <Toaster position="top-center" />
     </div>
   );
 };
